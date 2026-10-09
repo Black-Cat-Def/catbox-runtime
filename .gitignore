@@ -1,0 +1,20 @@
+# Сборка C/C++
+build/
+cmake-build-*/
+*.o
+*.obj
+*.a
+*.so
+*.exe
+*.out
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+
+# Тестовые rootfs и артефакты
+rootfs/
+*.tar
+*.tar.gz
