@@ -16,5 +16,6 @@ cmake-build-*/
 
 # Тестовые rootfs и артефакты
 rootfs/
+.rootfs/
 *.tar
 *.tar.gz

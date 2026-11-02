@@ -26,6 +26,7 @@ endif()
 
 set(SOURCES
     src/main.cpp
+    src/cli.cpp
 )
 
 add_executable(catbox ${SOURCES})
