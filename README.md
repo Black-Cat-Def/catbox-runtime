@@ -77,6 +77,47 @@
 
 ---
 
+## Сборка и быстрый старт
+
+### 1. Установка зависимостей (Ubuntu / Debian)
+
+```bash
+sudo apt update && sudo apt install -y build-essential cmake libcap-dev curl
+```
+
+### 2. Сборка проекта
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+### 3. Подготовка корневой файловой системы (rootfs)
+
+Для запуска контейнера требуется базовая изолированная файловая система. Подготовить минимальный rootfs на базе BusyBox можно с помощью вспомогательного скрипта:
+
+```bash
+chmod +x scripts/fetch_rootfs.sh
+./scripts/fetch_rootfs.sh
+```
+
+*Примечание: скрипт загружает статически скомпилированный BusyBox и создает базовую структуру директорий в `.rootfs/busybox`.*
+
+Альтернативно можно экспортировать rootfs из любого OCI-образа через Docker:
+
+```bash
+mkdir -p .rootfs/alpine
+docker export $(docker create alpine:latest) | tar -x -C .rootfs/alpine
+```
+
+### 4. Запуск контейнера
+
+```bash
+sudo ./build/catbox run --rootfs .rootfs/busybox /bin/sh
+```
+
+---
+
 ## План разработки (Roadmap)
 
 Проект находится в стадии активной разработки:
