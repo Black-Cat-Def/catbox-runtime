@@ -28,6 +28,7 @@ set(SOURCES
     src/main.cpp
     src/cli.cpp
     src/sync.cpp
+    src/isolation.cpp
 )
 
 add_executable(catbox ${SOURCES})

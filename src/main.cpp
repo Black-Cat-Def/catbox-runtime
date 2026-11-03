@@ -1,4 +1,5 @@
 #include "cli.hpp"
+#include "isolation.hpp"
 #include <iostream>
 #include <string_view>
 #include <vector>
@@ -28,16 +29,12 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        std::cout << "[catbox] Конфигурация контейнера сформирована:\n"
-                  << "  - Rootfs:   " << config->rootfs_path << "\n"
-                  << "  - Hostname: " << config->hostname << "\n"
-                  << "  - Команда:  ";
-        for (const auto& part : config->command) {
-            std::cout << part << " ";
+        try {
+            return catbox::spawn_container_process(config.value());
+        } catch (const std::exception& e) {
+            std::cerr << "Ошибка: " << e.what() << "\n";
+            return 1;
         }
-        std::cout << "\n";
-
-        return 0;
     }
 
     std::cerr << "Ошибка: неизвестная команда '" << args[1] << "'. Используйте --help для справки.\n";
