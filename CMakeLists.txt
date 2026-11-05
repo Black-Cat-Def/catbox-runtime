@@ -46,3 +46,6 @@ else()
         target_compile_definitions(catbox PRIVATE HAVE_LIBCAP=1)
     endif()
 endif()
+
+include(GNUInstallDirs)
+install(TARGETS catbox DESTINATION ${CMAKE_INSTALL_BINDIR})

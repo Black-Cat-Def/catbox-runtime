@@ -16,10 +16,18 @@ echo "Скачивание статически скомпилированног
 curl -fsSL "${BUSYBOX_URL}" -o "${ROOTFS_DIR}/bin/busybox"
 chmod +x "${ROOTFS_DIR}/bin/busybox"
 
-echo "Создание символических ссылок для базовых утилит..."
+echo "Создание символических ссылок для стандартных утилит..."
 cd "${ROOTFS_DIR}/bin"
-for cmd in sh ls ps cat echo kill sleep mkdir rm pwd env; do
-    ln -sf busybox "${cmd}"
-done
+
+if ./busybox --install -s . 2>/dev/null; then
+    echo "Успешно установлены все доступные утилиты BusyBox."
+else
+    for cmd in sh bash ls ps cat echo kill sleep mkdir rmdir rm pwd env \
+               hostname uname whoami id which grep egrep fgrep sed awk \
+               find xargs top free df du head tail wc tr cut sort uniq \
+               touch cp mv ln chmod chown ping ip netstat clear vi test; do
+        ln -sf busybox "${cmd}"
+    done
+fi
 
 echo "Rootfs успешно подготовлен в ${ROOTFS_DIR}!"

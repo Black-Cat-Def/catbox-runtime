@@ -116,18 +116,24 @@ chmod +x scripts/fetch_rootfs.sh
 ./scripts/fetch_rootfs.sh
 ```
 
-### 3. Сборка проекта
+### 3. Сборка и установка проекта
 
 ```bash
+# Сборка бинарника в каталоге build
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
+
+# Установка утилиты в систему (/usr/local/bin)
+sudo cmake --install build
 ```
 
 ### 4. Запуск изолированного контейнера
 
 ```bash
 # Запуск интерактивного шелла с собственным именем хоста
-sudo ./build/catbox run --rootfs .rootfs/busybox --hostname mybox /bin/sh
+sudo catbox run --rootfs .rootfs/busybox --hostname mybox /bin/sh
+
+# (Либо напрямую без установки: sudo ./build/catbox run --rootfs .rootfs/busybox /bin/sh)
 ```
 
 **Проверка изоляции внутри контейнера:**
@@ -153,9 +159,9 @@ drwxr-xr-x    2 root     root          4096 sys
 ## Дорожная карта разработки (Roadmap)
 
 - [x] **Этап 1: Базовая изоляция и запуск процессов (MVP) — ВЫПОЛНЕН**
-  - [x] Настройка сборочной системы `CMakeLists.txt` под C++17 (`_GNU_SOURCE`).
+  - [x] Настройка сборочной системы `CMakeLists.txt` под C++17 (`_GNU_SOURCE`) и правила установки `cmake --install`.
   - [x] Каркас CLI точки входа (`main.cpp`, `cli.cpp`) и валидация привилегий `root`.
-  - [x] Скрипт скачивания и распаковки тестового rootfs (`busybox`).
+  - [x] Скрипт скачивания rootfs (`busybox`) с автогенерацией полного набора утилит.
   - [x] Структура конфигурации контейнера `ContainerConfig` и парсер аргументов.
   - [x] Канал синхронизации родителя и потомка `SyncPipe` на базе `pipe2(O_CLOEXEC)`.
   - [x] Порождение процесса в пространствах имён (`clone`: PID, Mount, UTS, IPC).
